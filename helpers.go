@@ -1,6 +1,9 @@
 package main
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func GetStats(tokens []int) map[[2]int]int {
 	count := make(map[[2]int]int)
@@ -28,4 +31,20 @@ func GetMaxRecurringPairs(m map[[2]int]int) ([2]int, int) {
 	}
 
 	return maxKey, maxValue
+}
+
+func MergeRecurringPairs(tokens []int, recurringPair [2]int, idxToMerge int) []int {
+	fmt.Printf("Merging %v into %v\n", recurringPair, idxToMerge)
+	newTokens := []int{}
+	i := 0
+	for i < len(tokens) {
+		if i < len(tokens)-1 && tokens[i] == recurringPair[0] && tokens[i+1] == recurringPair[1] {
+			newTokens = append(newTokens, idxToMerge)
+			i += 2
+		} else {
+			newTokens = append(newTokens, tokens[i])
+			i++
+		}
+	}
+	return newTokens
 }
