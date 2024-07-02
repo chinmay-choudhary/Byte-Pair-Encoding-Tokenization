@@ -12,11 +12,15 @@ func main() {
 
 	reader := bufio.NewScanner(os.Stdin)
 
-	fmt.Print("Input string to encode: ")
+	fmt.Print("Input string to encode (to exit enter q!): ")
 
 	reader.Scan()
 
 	userInput := reader.Text()
+
+	if userInput == EXIT_CODE {
+		os.Exit(0)
+	}
 
 	ids := encode(merges, userInput)
 
