@@ -1,39 +1,30 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 )
 
 func main() {
-	// fmt.Println("Input a string to get numerical representation")
+	fmt.Println("Training Tokenizer")
+	vocab, merges := TrainEncoder(LONGTEXT, 296)
 
-	// reader := bufio.NewScanner(os.Stdin)
-	// reader.Scan()
+	reader := bufio.NewScanner(os.Stdin)
 
-	// userInput := reader.Text()
+	fmt.Print("Input string to encode: ")
 
-	stringBytes := []byte(LONGTEXT)
+	reader.Scan()
 
-	tokens := make([]int, len(stringBytes))
-	for i, b := range stringBytes {
-		tokens[i] = int(b)
-	}
+	userInput := reader.Text()
 
-	// fmt.Printf("User Input: %s\n", userInput)
-	// fmt.Printf("Integer representation %v\n", tokens)
-	// fmt.Printf("Len of tokens before merging recurring tokens: %v\n", len(tokens))
-	vocabSize := 276
-	numMerges := vocabSize - 256
-	ids := tokens
+	ids := encode(merges, userInput)
 
-	for i := 0; i < numMerges; i++ {
-		stats := GetStats(ids)
-		maxPair, _ := GetMaxRecurringPairs(stats)
-		idxToMerge := 256 + i
-		ids = MergeRecurringPairs(ids, maxPair, idxToMerge)
-	}
-	fmt.Println("Original token length: ", len(tokens))
-	fmt.Println("Merged ids length: ", len(ids))
-	compressionRatio := float64(len(tokens)) / float64(len(ids))
-	fmt.Printf("Compression Ratio: %.2f", compressionRatio)
+	fmt.Printf("Tokenized Input: %v\n", ids)
+
+	decodedUserInput := decode(ids, vocab)
+
+	fmt.Printf("Decoded Input: %v\n", decodedUserInput)
+
+	fmt.Printf("%v\n", userInput == decodedUserInput)
 }

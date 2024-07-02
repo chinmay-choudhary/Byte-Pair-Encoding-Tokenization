@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -34,7 +33,6 @@ func GetMaxRecurringPairs(m map[[2]int]int) ([2]int, int) {
 }
 
 func MergeRecurringPairs(tokens []int, recurringPair [2]int, idxToMerge int) []int {
-	fmt.Printf("Merging %v into %v\n", recurringPair, idxToMerge)
 	newTokens := []int{}
 	i := 0
 	for i < len(tokens) {
